@@ -1,0 +1,587 @@
+def linear_programming():
+    # Define the coefficients of the objective function
+    c1 = 8
+    c2 = 7
+
+    # Define the constraints coefficients
+    constraints = [
+        (2, 1, 8),
+        (5, 2, 15)
+    ]
+
+    # Initialize the maximum value of the objective function
+    max_z = float('-inf')
+
+    # Initialize variables to store optimal values of x1 and x2
+    optimal_x1 = 0
+    optimal_x2 = 0
+
+    # Dynamic programming table to store the maximum value of the objective function for each state
+    dp = [[0 for _ in range(16)] for _ in range(9)]  # 0 <= x1 <= 8, 0 <= x2 <= 15
+
+    # Stage 1: Calculate maximum value for x1
+    for x1 in range(9):  # 0 <= x1 <= 8
+        for x2 in range(16):  # 0 <= x2 <= 15
+            # Check if the current combination satisfies the constraints
+            if all(a*x1 + b*x2 <= c for a, b, c in constraints):
+                # Calculate the value of the objective function for the current combination
+                z = c1*x1 + c2*x2
+                dp[x1][x2] = z
+                # Update the maximum value of the objective function and optimal x1, x2 if necessary
+                if z > max_z:
+                    max_z = z
+                    optimal_x1 = x1
+                    optimal_x2 = x2
+
+    # Print the dynamic programming table after stage 1
+    print("Stage 1 (x1):")
+    for row in dp:
+        print(row)
+    print()
+
+    # Stage 2: Calculate maximum value for x2
+    dp = [[0 for _ in range(16)] for _ in range(9)]  # Reset the dp table
+    for x2 in range(16):  # 0 <= x2 <= 15
+        for x1 in range(9):  # 0 <= x1 <= 8
+            # Check if the current combination satisfies the constraints
+            if all(a*x1 + b*x2 <= c for a, b, c in constraints):
+                # Calculate the value of the objective function for the current combination
+                z = c1*x1 + c2*x2
+                dp[x1][x2] = z
+
+    # Print the dynamic programming table after stage 2
+    print("Stage 2 (x2):")
+    for row in dp:
+        print(row)
+    print()
+
+    # Print the optimal solution
+    print("Optimal solution:")
+    print("x1 =", optimal_x1)
+    print("x2 =", optimal_x2)
+    print("Maximum value of z =", max_z)
+
+# Call the function to solve the linear programming problem
+linear_programming()
+
+
+
+//new
+//wrong output
+def linear_programming():
+    # Define the coefficients of the objective function
+    c = [8, 7]  # Coefficients of objective function (c1, c2)
+
+    # Define the constraints coefficients
+    constraints = [
+        (2, 1, 8),
+        (5, 2, 15)
+    ]
+
+    # Initialize the maximum value of the objective function
+    max_z = float('-inf')
+
+    # Initialize variables to store optimal values of x1 and x2
+    optimal_x = [0] * len(c)
+
+    # Stage 1: Calculate maximum value for each variable
+    for var_idx in range(len(c)):
+        # Initialize array to store results for current stage
+        dp = [0] * 16  # 0 <= x <= 15
+
+        for val in range(16):
+            # Calculate the value of the objective function for the current combination
+            z = sum(val * coeff for val, coeff in zip(optimal_x, c))
+            dp[val] = z
+
+            # Update the maximum value of the objective function and optimal value if necessary
+            if z > max_z:
+                max_z = z
+                optimal_x[var_idx] = val
+
+        # Print the dynamic programming table after each stage
+        print(f"Stage {var_idx + 1} (x{var_idx + 1}):")
+        print(dp)
+        print()
+
+    # Print the optimal solution
+    print("Optimal solution:")
+    for var_idx, val in enumerate(optimal_x):
+        print(f"x{var_idx + 1} =", val)
+    print("Maximum value of z =", max_z)
+
+# Call the function to solve the linear programming problem
+linear_programming()
+
+
+
+
+
+
+
+
+-------------------------------------------------------------
+eq1 = [2,1]
+eq2 = [0,2]
+bstar = [430,460]
+
+
+bs1 = min(bstar[0]//eq1[0] if eq1[0] != 0 else 1000000007 ,bstar[1]//eq2[0] if eq2[0] != 0 else 1000000007)
+bs2 = min(bstar[0]//eq1[1] if eq1[1] != 0 else 1000000007 ,bstar[1]//eq2[1] if eq2[1] != 0 else 1000000007)
+x1=[]
+for i in [0,bs2]:
+    x1.append([(430 - i )//2 , i])
+ans = -1000000007
+
+for x,y in x1:
+    if(2*x+5*y>=ans):
+        ans=2*x+5*y
+        c=x
+        d=y
+#     ans = max(ans,2*x+5*y)
+#     c=x
+#     d=y
+
+print( "optimised output forwards - - -  " , ans)
+print("x1:",c)
+print("x2",d)
+
+
+bs1 = min(bstar[0]//eq1[1] if eq1[1] != 0 else 1000000007 ,bstar[1]//eq2[1] if eq2[1] != 0 else 1000000007)
+bs2 = min(bstar[0]//eq1[0] if eq1[0] != 0 else 1000000007 ,bstar[1]//eq2[0] if eq2[0] != 0 else 1000000007)
+x1=[]
+for i in [0,bs1]:
+    x1.append([(430 - i )//2 , i])
+ans = -1000000007
+for x,y in x1:
+    if(2*x+5*y>=ans):
+        ans=2*x+5*y
+        c=x
+        d=y
+print( "optimised output backwards - - -  " , ans)
+print("x1:",c)
+print("x2",d)
+
+--------------------------
+
+
+eq1 = [2,1]
+eq2 = [5,2]
+bstar = [8,15]
+
+# bs1 = min(bstar[0]//eq1[0] if eq1[0] != 0 else 1000000007 ,bstar[1]//eq2[0] if eq2[0] != 0 else 1000000007)
+# bs2 = min(bstar[0]//eq1[1] if eq1[1] != 0 else 1000000007 ,bstar[1]//eq2[1] if eq2[1] != 0 else 1000000007)
+# x1=[]
+# for i in [0,bs2]:
+#     x1.append([(8 - i )//2 , i])
+# ans = -1000000007
+# for x,y in x1:
+#     ans = max(ans,8*x+7*y)
+# print( "optimised output forwards - - -  " , ans)
+
+#backwards
+bs1 = min(bstar[0]/eq1[1] if eq1[1] != 0 else 1000000007 ,bstar[1]/eq2[1] if eq2[1] != 0 else 1000000007)
+bs2 = min(bstar[0]//eq1[0] if eq1[0] != 0 else 1000000007 ,bstar[1]//eq2[0] if eq2[0] != 0 else 1000000007)
+print(bs1,"--",bs2)
+x2m = []
+for x in [0,bs2]:
+    x2 = min(8 - 2*x , (15-5*x)/2)
+    x2m.append([x2,x])
+    
+print(x2m)
+ans = -1000000007
+for y,x in x2m:
+#     print(x,y,8*x+7*y)
+    ans = max(ans,8*x+7*y)
+print( "optimised output backwards - - -  " , ans)
+
+
+
+
+
+// new forward
+
+#lpp USING dpp
+eq1 = [2,1]
+eq2 = [5,2]
+bstar = [8,15]
+
+
+bs1 = min(bstar[0]/eq1[0] if eq1[0] != 0 else 1000000007 ,bstar[1]/eq2[0] if eq2[0] != 0 else 1000000007)
+bs2 = min(bstar[0]/eq1[1] if eq1[1] != 0 else 1000000007 ,bstar[1]/eq2[1] if eq2[1] != 0 else 1000000007)
+x1=[]
+for i in [0,bs2]:
+    x1.append(min([(15- 2*i )//5, i], [(8-i)//2, i]))
+ans = -1000000007
+
+for x,y in x1:
+    if(8*x+7*y>=ans):
+        ans=8*x+7*y
+        c=x
+        d=y
+#     ans = max(ans,2*x+5*y)
+#     c=x
+#     d=y
+
+print( "optimised output forwards - - -  " , ans)
+print("x1:",c)
+print("x2",d)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+eq1 = [2,1]
+eq2 = [5,2]
+bstar = [8,15]
+
+bs1 = min(bstar[0]/eq1[0] if eq1[0] != 0 else 1000000007 ,bstar[1]/eq2[0] if eq2[0] != 0 else 1000000007)
+bs2 = min(bstar[0]/eq1[1] if eq1[1] != 0 else 1000000007 ,bstar[1]/eq2[1] if eq2[1] != 0 else 1000000007)
+x1=[]
+for i in [0,bs2]:
+    x1.append([(8 - i )//2 , i])
+ans = -1000000007
+for x,y in x1:
+    ans = max(ans,8*x+7*y)
+print( "optimised output forwards - - -  " , ans)
+
+#backwards
+bs1 = min(bstar[0]/eq1[1] if eq1[1] != 0 else 1000000007 ,bstar[1]/eq2[1] if eq2[1] != 0 else 1000000007)
+bs2 = min(bstar[0]//eq1[0] if eq1[0] != 0 else 1000000007 ,bstar[1]//eq2[0] if eq2[0] != 0 else 1000000007)
+print(bs1,"--",bs2)
+x2m = []
+for x in [0,bs2]:
+    x2 = min(8 - 2*x , (15-5*x)/2)
+    x2m.append([x2,x])
+    
+print(x2m)
+ans = -1000000007
+for y,x in x2m:
+#     print(x,y,8*x+7*y)
+    ans = max(ans,8*x+7*y)
+print( "optimised output backwards - - -  " , ans)
+
+
+
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------------
+#price break
+import math
+inf=99999999
+pi=[10,9.25,8.75]
+c3 = 100
+d= 200
+q=[0,500,750,inf]
+ac =[]
+tc=[]
+min_q=inf
+c1 = [0.02*10,0.02*9.25,0.02*8.75]
+q3= round(math.sqrt((2*c3*d)/c1[2]))
+q2= round(math.sqrt((2*c3*d)/c1[1]))
+q1= round(math.sqrt((2*c3*d)/c1[0]))
+qi=[q1,q2,q3]
+for i in range(3):
+    if q[i]<qi[i] and qi[i]<q[i+1] or q[i]==qi[i]:
+        ac.append(True)
+    else:
+        ac.append(False)
+for i in range(3):
+    if ac[i]:
+        tc.append( math.sqrt(2*c1[i]*c3*d) + pi[i]*d)
+    else:
+        tc.append((q[i]*c1[i])/2 + (c3*d)/q[i] + (pi[i]*d))
+    if min_q>tc[i]:
+        min_q=tc[i]
+        x=q[i]
+print("EOQ for unit price:",qi)
+print("Total cost/month for respesctive order quantity :",tc)
+print("optimal order quantity: ",x)
+
+
+--------------------------------------------------------------------------------------------------------------
+#model 1(A)
+import math
+d=12000
+#st='uniform'
+c1=0.20
+c3=350
+c=1
+# if st=='uniform':
+d=d//12
+print("Demand/month :",d)
+q0=math.sqrt((2*c3*d)/c1)
+print("Optimum lot size: ",q0)
+t0=math.sqrt((2*c3)/(c1*d))
+print("Optimum scheduling period or time between two orders in weeks: ",(t0*30)/7)
+c0=math.sqrt(2*c1*c3*d)
+print("Minimum average cost: ",round(c0 *12))
+print("No of orders per year: ",1/t0)
+print("Total minimum cost per unit time: ",c0 + c*d )
+
+------------------------------------------------------------------------------------------------------------------
+#model 1(c)
+import math
+R=12000
+K=2000*12
+c3=400
+c1=0.15*12
+q0=round(math.sqrt(K*2*c3*R/((K-R)*c1)))
+c=4
+c0=round((R*c)+ math.sqrt(2*c1*c3*R*(K-R)/K))
+Im= (K-R)*q0/K
+t1= Im/(K-R)
+t0= q0/R
+print("Optimal lot size: ",q0)
+print("Total cost per year: ",c0)
+print("Maximum inventory: ",Im)
+print("Manufacturing time in years: ",t1)
+print("Total time in years: ",t0)
+#if K=R c0=0 and if K=infinite then model 1(a)
+
+-----------------------------------------------------------------------------------------------------------------
+#model 2A
+import math
+d=10000
+c3=10
+c1=0.20*20
+c2=0.25 * 20
+print("Demand:",d)
+
+q=math.sqrt((2*c3*d)/c1)
+print("Optimum cost when no shortage allowed:",q)
+
+q2=math.sqrt(((2*c3*d)/c1)*((c1+c2)/c2))
+print("Optimum cost when shortage allowed:",q2)
+
+Im=math.sqrt(((2*c3*d)/c1)*(c1/(c1+c2)))
+qt=q2-Im
+print("Quantity to be backordered:",qt)
+print("Max inventory at any time of the year:",Im)
+
+op_wdout_back=math.sqrt(2*c3*c1*d)
+op_wd_back=op_wdout_back*(math.sqrt(c2/(c1+c2)))
+
+print("optimal cost with no backordering:",op_wdout_back)
+print("optimal cost with backordering:",op_wd_back)
+save=op_wdout_back-op_wd_back
+
+print("Save:",save)
+if op_wd_back<op_wdout_back:
+    print("Allow backordering")
+else:
+    print("Backordereing not allowed")
+-------------------------------------------------------------------------------------------------------------
+#model 2(C)
+d=18000/12
+c1=0.15
+c2=20
+c3=500
+k=3000
+
+q=math.sqrt(((2*c3*d)/c1)*((c1+c2)/c2)*(k/(k-d)))
+im=math.sqrt(((2*c3*d)/c1)*(c2/(c1+c2))*((k-d)/k))
+Is=((k-d)/k)*q-im
+print("Manufacturing Quantity:",q)
+print("no of shortage",round(Is))
+print("Production time",(q/k))
+print("Time between setup:",round(q/d))
+
+----------------------------------------------------------------------------------------------------------------
+#shortest path
+#optimal_path=[]
+def find_shortest_path(graph):
+    n = len(graph)
+
+    # Initialize the network
+    f = [float('inf')] * n
+    f[0] = 0
+
+    # Keep track of optimal paths at each stage
+    optimal_paths = [[] for _ in range(n)]
+    optimal_paths[0] = [1]  # Start from the first city
+
+    # Dynamic Programming Recursion
+    for i in range(1, n):
+        for j in range(i):
+            # Assuming the graph represents distances between cities
+            if f[j] + graph[j][i] < f[i]:
+                f[i] = f[j] + graph[j][i]
+                optimal_paths[i] = optimal_paths[j] + [i + 1]  # Adjust indexing
+
+        # Print information at each stage
+        # print(f"\nStage {i} - Optimal Distance: {f[:i + 1]}")
+        # print(f"Optimal Paths: {optimal_paths[:i + 1]}")
+
+    # Determine Overall Optimal Decision or Policy
+    overall_optimal_distance = f[n - 1]
+    overall_optimal_path = optimal_paths[n - 1]
+    #print(optimal_paths)
+    #print(f)
+    return overall_optimal_distance, overall_optimal_path,optimal_paths,f
+
+# Given Graph
+graph = [
+    [0, 7, 8, 9, float('inf'), float('inf'), float('inf')],  # Stage 1
+    [float('inf'), 0, float('inf'), float('inf'), 12, float('inf'), float('inf')],  # Stage 2
+    [float('inf'), float('inf'), 0, float('inf'), 8, 9, float('inf')],   # Stage 3
+    [float('inf'), float('inf'), float('inf'), 0, 7, 13, float('inf')],  # Stage 4
+    [float('inf'), float('inf'), float('inf'), float('inf'), 0, float('inf'), 9, ],   # Stage 5
+    [float('inf'), float('inf'), float('inf'), float('inf'), float('inf'), 0, 6, ],   # Stage 6
+    [float('inf'), float('inf'), float('inf'), float('inf'), float('inf'), float('inf'), 0]    # Stage 7
+]
+
+#for i in
+#for i in range(len)
+
+# Example Usage
+result_distance, result_path,optimal_path,optimal_distance = find_shortest_path(graph)
+
+#print(optimal_path)
+#print(len(optimal_path))
+max=1
+for i in range(len(optimal_path)):
+     if(len(optimal_path[i])>max):
+       max=len(optimal_path[i])
+     #print(len(optimal_path[i]))
+
+l=len(optimal_path)
+# print(max)
+# print(optimal_distance)
+for i in range(1,max+1):
+   print(f"\nStage {i}:")
+   for j in range(0,l):
+      #print(len(optimal_path[j]))
+        if(len(optimal_path[j])==i):
+           print(f"\npath{optimal_path[j]}:---optimal_distance\t:{optimal_distance[j]}")
+
+print(f"\nThe shortest path distance is: {result_distance}")
+print(f"The overall optimal path is: {result_path}")
+
+--------------------------------------------------------------------------------------------------------------
+
+#knapsack
+def knapsack(weights, values, capacity):
+    n = len(weights)
+    f = [[0] * (capacity + 1) for _ in range(n + 1)]
+
+    # Step 1: Calculate optimal values stage-wise for each capacity
+    for i in range(n - 1, -1, -1):
+        for w in range(capacity + 1):
+            max_value = 0
+            for m in range(min(w // weights[i], values[i] // weights[i]) + 1):
+                max_value = max(max_value, m * values[i] + f[i + 1][w - m * weights[i]])
+            f[i][w] = max_value
+
+    return f
+
+def print_optimal_values(weights, values, capacity):
+    n = len(weights)
+    f = knapsack(weights, values, capacity)
+    
+    # Print stage-wise optimal values for each capacity
+    print("Stage-wise optimal values for each capacity:")
+    for i in range(n - 1, -1, -1):
+        print(f"Stage {n - i}: {f[i]}")
+
+    # Print optimal solution
+    optimal_solution = f[0][capacity]
+    print("Optimal solution:", optimal_solution)
+
+# Example usage:
+weights = [2, 3, 1]
+values = [31, 47, 14]
+capacity = 4
+
+print_optimal_values(weights, values, capacity)
+
+
+
+
+
+
+
+
+
+
+
+
+------------------------------------
+3 variables lpp
+####forward pass correct
+import numpy as np
+
+# Define coefficients of the objective function
+c = np.array([50, 100])
+
+# Define coefficients of the constraints
+A = np.array([[10, 5],
+              [4, 10],
+              [1, 1.5]])
+
+# Define right-hand side of constraints
+b = np.array([2500, 2000, 450])
+
+def optimize_linear_programming(A, b, c):
+    n = len(c)
+    m = len(b)
+
+    # Forward pass
+    forward_optimal_solution = np.zeros(n)
+    forward_optimal_value = -float('inf')
+    for i in range(m):
+        subset_A = A[:i+1]
+        subset_b = b[:i+1]
+        if np.linalg.matrix_rank(subset_A) == subset_A.shape[0]:
+            x = np.linalg.lstsq(subset_A, subset_b, rcond=None)[0]
+            if (x >= 0).all():
+                z = np.dot(c, x)
+                if z > forward_optimal_value:
+                    forward_optimal_value = z
+                    forward_optimal_solution = x
+
+    # Backward pass
+    backward_optimal_solution = np.zeros(n)
+    backward_optimal_value = -float('inf')
+    for i in range(m-1, -1, -1):
+        subset_A = A[i:]
+        subset_b = b[i:]
+        if np.linalg.matrix_rank(subset_A) == subset_A.shape[0]:
+            x = np.linalg.lstsq(subset_A, subset_b, rcond=None)[0]
+            if (x >= 0).all():
+                z = np.dot(c, x)
+                if z > backward_optimal_value:
+                    backward_optimal_value = z
+                    backward_optimal_solution = x
+
+    return forward_optimal_solution, forward_optimal_value, backward_optimal_solution, backward_optimal_value
+
+forward_solution, forward_value, backward_solution, backward_value = optimize_linear_programming(A, b, c)
+
+print("Forward pass - Optimized output:", forward_value)
+print("Forward pass - x1:", forward_solution[0], "x2:", forward_solution[1])
+
+print("Backward pass - Optimized output:", backward_value)
+print("Backward pass - x1:", backward_solution[0], "x2:", backward_solution[1])
